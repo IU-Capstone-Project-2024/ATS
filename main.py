@@ -1,4 +1,3 @@
-import uuid
 from api.bybit_api import BybitAPI
 
 bybit = BybitAPI()
