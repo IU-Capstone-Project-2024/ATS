@@ -43,7 +43,7 @@ class TradingBot:
             order_id = input("Enter order ID: ")
             return self.bybit.cancel_order(order_id)
         elif action == "get_historical_data":
-            return self.bybit.get_historical_data()
+            raise NotImplementedError
         elif action == "exit":
             exit()
 
@@ -52,4 +52,7 @@ if __name__ == '__main__':
     # mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
     mode = 'user'
     bot = TradingBot(mode)
-    bot.run()
+    try:
+        bot.run()
+    except Exception as e:
+        print(e)
