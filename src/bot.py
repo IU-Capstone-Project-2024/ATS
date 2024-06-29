@@ -1,8 +1,8 @@
 import time
 from ml_interface import MLInterface
 from user_interface import UserInterface
-from trade_executor import TradeExecutor
-from logger.py import Logger
+from logger import Logger
+from bybit import BybitAPI
 
 
 class TradingBot:
@@ -10,38 +10,25 @@ class TradingBot:
         self.mode = mode
         self.ml_interface = MLInterface()
         self.user_interface = UserInterface()
-        self.trade_executor = TradeExecutor()
+        self.bybit = BybitAPI()
         self.logger = Logger()
 
     def run(self):
         while True:
+            order_params = None
+
             if self.mode == 'ml':
-                signal = self.ml_interface.get_price_signal()
-                self.execute_trade(signal)
+                order_params = self.ml_interface.get_price_signal()
             elif self.mode == 'user':
-                command = self.user_interface.get_user_command()
-                self.execute_trade(command)
+                order_params = self.user_interface.create_order()
+
+            self.execute_trade(order_params)
             time.sleep(1)
 
-    def execute_trade(self, signal):
-        # signal should have the structure {'action': 'buy'/'sell', 'symbol': 'BTCUSD', 'qty': 1}
-        action = signal.get('action')
-        symbol = signal.get('symbol')
-        qty = signal.get('qty')
+    def execute_trade(self, order_params):
+        response = self.bybit.create_order(**order_params)
 
-        if action == 'buy':
-            response = self.trade_executor.buy(symbol, qty)
-        elif action == 'sell':
-            response = self.trade_executor.sell(symbol, qty)
-
-        trade_log = {
-            'action': action,
-            'symbol': symbol,
-            'qty': qty,
-            'response': response,
-            'timestamp': time.time()
-        }
-        self.logger.log_trade(trade_log)
+        print("Create Order Response:", response)
 
 
 if __name__ == '__main__':
