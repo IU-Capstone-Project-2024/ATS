@@ -11,10 +11,18 @@ class BybitAPI:
         self.client = HTTP(testnet=True, api_key=self.api_key, api_secret=self.secret_key)
 
     def create_order(self, payload):
+        if payload['price'] is None or float(payload['price']) < 0:
+            payload['price'] = str(self.get_current_price(payload['symbol']))
         response = self.client.place_order(**payload)
         return response
 
-    def get_unfilled_orders(self, open_only: int = 0, limit: int = 1):
+    def get_current_price(self, symbol):
+        return self.client.get_tickers(
+            category="inverse",
+            symbol="BTCUSD",
+        )['result']['list'][0]['lastPrice']
+
+    def get_unfilled_orders(self, category: str, symbol: str, open_only: int = 0, limit: int = 1):
         payload = {
             "category": "spot",
             "symbol": "BTCUSDT",

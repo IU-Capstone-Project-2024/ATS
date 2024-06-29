@@ -8,7 +8,7 @@ class UserInterface:
         return questionary.select(prompt_text, choices=options).ask()
 
     def _get_user_input(self, prompt, default=None):
-        return questionary.text(f"{prompt} [{default}]:").ask() or default
+        return questionary.text(f"{prompt} [{default}]:").ask() or None
 
     def create_order(self):
         category = "spot"  # Default value
