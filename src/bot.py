@@ -19,12 +19,12 @@ class TradingBot:
         while True:
             action = self.select_action()
 
-            self.do_action(action)
+            print(self.do_action(action))
 
             time.sleep(1)
 
     def select_action(self):
-        actions = ["create_order", "get_unfilled_orders", "cancel_order", "get_historical_data"]
+        actions = ["create_order", "get_unfilled_orders", "cancel_order", "get_historical_data", "exit"]
 
         return questionary.select("Select action", choices=actions).ask()
 
@@ -36,7 +36,7 @@ class TradingBot:
             elif self.mode == 'user':
                 order_params = self.user_interface.create_order()
 
-            return self.execute_trade(order_params)
+            return self.bybit.create_order(order_params)
         elif action == "get_unfilled_orders":
             return self.bybit.get_unfilled_orders()
         elif action == "cancel_order":
@@ -44,9 +44,12 @@ class TradingBot:
             return self.bybit.cancel_order(order_id)
         elif action == "get_historical_data":
             return self.bybit.get_historical_data()
+        elif action == "exit":
+            exit()
 
 
 if __name__ == '__main__':
-    mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
+    # mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
+    mode = 'user'
     bot = TradingBot(mode)
     bot.run()
