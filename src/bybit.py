@@ -22,7 +22,7 @@ class BybitAPI:
             symbol="BTCUSD",
         )['result']['list'][0]['lastPrice']
 
-    def get_unfilled_orders(self, category: str, symbol: str, open_only: int = 0, limit: int = 1):
+    def get_unfilled_orders(self, open_only: int = 0, limit: int = 1):
         payload = {
             "category": "spot",
             "symbol": "BTCUSDT",
