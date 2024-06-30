@@ -8,7 +8,7 @@ import questionary
 
 
 class TradingBot:
-    def __init__(self, logger):
+    def __init__(self, mode, logger):
         self.mode = mode
         self.ml_interface = MLInterface()
         self.user_interface = UserInterface()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
     mode = 'user'
     logger = Logger()
-    bot = TradingBot(logger)
+    bot = TradingBot(mode, logger)
     try:
         bot.run()
     except Exception as e:
