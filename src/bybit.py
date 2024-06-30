@@ -51,7 +51,7 @@ class BybitAPI:
         }
         response = self.client.get_kline(**payload)
         data = response['result']['list']
-        df = pd.DataFrame(data, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
-        df['timestamp'] = pd.to_datetime(df['timestamp'], unit='ms')
+        df = pd.DataFrame(data, columns=['timestamp', 'open', 'high', 'low', 'close', 'bitcoins', 'volume'])
+        df['timestamp'] = pd.to_datetime(df['timestamp'].astype(int), unit='ms')
         df.set_index('timestamp', inplace=True)
         return df

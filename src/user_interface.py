@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 import questionary
 
-
 class UserInterface:
     def _select_from_list(self, prompt_text, options):
         return questionary.select(prompt_text, choices=options).ask()
