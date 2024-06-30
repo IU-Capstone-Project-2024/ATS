@@ -8,18 +8,19 @@ import questionary
 
 
 class TradingBot:
-    def __init__(self, mode):
+    def __init__(self, logger):
         self.mode = mode
         self.ml_interface = MLInterface()
         self.user_interface = UserInterface()
         self.bybit = BybitAPI()
-        self.logger = Logger()
+        self.logger = logger
 
     def run(self):
         while True:
             action = self.select_action()
-
-            print(self.do_action(action))
+            result = self.do_action(action)
+            self.logger.log_trade(str(action), str(result))
+            print(result)
 
             time.sleep(1)
 
@@ -51,8 +52,11 @@ class TradingBot:
 if __name__ == '__main__':
     # mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
     mode = 'user'
-    bot = TradingBot(mode)
+    logger = Logger()
+    bot = TradingBot(logger)
     try:
         bot.run()
     except Exception as e:
         print(e)
+    finally:
+        logger.close()
