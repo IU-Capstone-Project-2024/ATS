@@ -13,7 +13,7 @@ class SMAAlgorithm(Algorithm):
         self.signals['short_mavg'] = self.data['close'].rolling(window=self.short_window, min_periods=1).mean()
         self.signals['long_mavg'] = self.data['close'].rolling(window=self.long_window, min_periods=1).mean()
         self.signals['signal'] = 0.0
-        self.signals['signal'][self.short_window:] = \
+        self.signals.loc[self.signals.index[self.short_window:], 'signal'] = \
             np.where(self.signals['short_mavg'][self.short_window:] > self.signals['long_mavg'][self.short_window:], 1.0, 0.0)
         self.signals['positions'] = self.signals['signal'].diff()
 

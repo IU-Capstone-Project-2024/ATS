@@ -18,6 +18,7 @@ class TradingBot:
             data = self.get_historical_data()
             self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
             self.algorithm.generate_signals()
+            print(self.algorithm.signals['signal'])
 
     def run(self):
         while True:
@@ -84,6 +85,7 @@ class TradingBot:
 
         all_data.to_csv('historical_data.csv')
         return all_data
+
 
 if __name__ == '__main__':
     mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
