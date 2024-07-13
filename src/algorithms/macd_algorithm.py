@@ -10,20 +10,28 @@ class MACDAlgorithm(Algorithm):
         self.signal_window = signal_window
 
     def generate_signals(self):
-        self.signals['MACD'] = self.data['Close'].ewm(span=self.short_window, adjust=False).mean() - \
-                               self.data['Close'].ewm(span=self.long_window, adjust=False).mean()
+        self.signals['MACD'] = self.data['close'].ewm(span=self.short_window, adjust=False).mean() - \
+                               self.data['close'].ewm(span=self.long_window, adjust=False).mean()
         self.signals['Signal'] = self.signals['MACD'].ewm(span=self.signal_window, adjust=False).mean()
         self.signals['Hist'] = self.signals['MACD'] - self.signals['Signal']
+        self.signals['price'] = self.data['close']
         self.signals['signal'] = 0.0
-        self.signals['signal'][self.signals['MACD'] > self.signals['Signal']] = 1.0
-        self.signals['signal'][self.signals['MACD'] < self.signals['Signal']] = -1.0
+        self.signals.loc[self.signals['MACD'] > self.signals['Signal'], ['signal']] = 1.0
+        self.signals.loc[self.signals['MACD'] < self.signals['Signal'], ['signal']] = -1.0
 
-    def plot_signals(self):
+
+    def plot_signals(self, n_intervals=100):
         plt.figure(figsize=(14, 7))
-        plt.plot(self.data['Close'], label='Close Price')
-        plt.plot(self.signals['MACD'], label='MACD')
-        plt.plot(self.signals['Signal'], label='Signal Line')
-        plt.bar(self.signals.index, self.signals['Hist'], label='Histogram')
-        plt.title(f'{self.symbol} - MACD Strategy')
+        plt.plot(self.data['close'][-n_intervals:], label='Close Price')
+        macd_signals = self.signals[-n_intervals:]
+        plt.plot(macd_signals[macd_signals['signal'] == 1.0].index,
+                 macd_signals['price'][macd_signals['signal'] == 1.0],
+                 '^', markersize=10, color='m', label='Buy Signal')
+        plt.plot(macd_signals[macd_signals['signal'] == -1.0].index,
+                 macd_signals['price'][macd_signals['signal'] == -1.0],
+                 'v', markersize=10, color='k', label='Sell Signal')
+        """plt.plot(macd_signals['Signal'], label='Signal Line')
+        plt.bar(macd_signals.index, macd_signals['Hist'], label='Histogram')
+        plt.title(f'{self.symbol} - MACD Strategy')"""
         plt.legend()
         plt.show()

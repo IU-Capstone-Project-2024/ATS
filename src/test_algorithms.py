@@ -3,6 +3,10 @@ import questionary
 import pandas as pd
 from algorithms.sma_algorithm import SMAAlgorithm
 from algorithms.rsi_algorithm import RSIAlgorithm
+from algorithms.ema_algorithm import EMAAlgorithm
+from algorithms.macd_algorithm import MACDAlgorithm
+from algorithms.bollinger_bands_algorithm import BollingerBandsAlgorithm
+from algorithms.momentum_strategy import MomentumStrategyAlgorithm
 from user_interface import UserInterface
 from logger import Logger
 from bybit import BybitAPI
@@ -20,7 +24,11 @@ class TradingBot:
             data['close'] = pd.to_numeric(data['close'])
             data = data.sort_values(by='timestamp')
             # self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
-            self.algorithm = RSIAlgorithm(symbol="BTCUSDT", data=data, period=10)
+            # self.algorithm = RSIAlgorithm(symbol="BTCUSDT", data=data, period=14)
+            # self.algorithm = EMAAlgorithm(symbol="BTCUSDT", data=data, short_window=12, long_window=26)
+            # self.algorithm = MACDAlgorithm(symbol="BTCUSDT", data=data, short_window=12, long_window=26, signal_window=9)
+            # self.algorithm = BollingerBandsAlgorithm(symbol="BTCUSDT", data=data, window=20, num_std_dev=2)
+            self.algorithm = MomentumStrategyAlgorithm(symbol="BTCUSDT", data=data, window=20)
             self.algorithm.generate_signals()
             self.algorithm.plot_signals(n_intervals=200)
 
@@ -80,8 +88,8 @@ class TradingBot:
 
         all_data = pd.DataFrame()
 
-        while start_time < end_time:
-            df = self.bybit.get_historical_data(interval, start_time, 4 * 24)
+        while start_time <= end_time:
+            df = self.bybit.get_historical_data(interval, start_time, 60 * 24 // int(interval))
             if df.empty:
                 break
             all_data = pd.concat([all_data, df])
