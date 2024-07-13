@@ -19,9 +19,10 @@ class TradingBot:
             data = self.get_historical_data()
             data['close'] = pd.to_numeric(data['close'])
             data = data.sort_values(by='timestamp')
-            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
+            # self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
+            self.algorithm = RSIAlgorithm(symbol="BTCUSDT", data=data, period=10)
             self.algorithm.generate_signals()
-            self.algorithm.plot_signals(n_intervals=100)
+            self.algorithm.plot_signals(n_intervals=200)
 
     def run(self):
         while True:
