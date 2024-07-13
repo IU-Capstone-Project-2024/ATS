@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from .algorithm import Algorithm
 
 class BollingerBandsAlgorithm(Algorithm):
     def __init__(self, symbol: str, data: pd.DataFrame, window: int, num_std_dev: int):
