@@ -2,6 +2,7 @@ import time
 import questionary
 import pandas as pd
 from algorithms.sma_algorithm import SMAAlgorithm
+from algorithms.rsi_algorithm import RSIAlgorithm
 from user_interface import UserInterface
 from logger import Logger
 from bybit import BybitAPI
@@ -16,9 +17,11 @@ class TradingBot:
 
         if self.mode == 'ml':
             data = self.get_historical_data()
-            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
+            data['close'] = pd.to_numeric(data['close'])
+            data = data.sort_values(by='timestamp')
+            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, period=10)
             self.algorithm.generate_signals()
-            print(self.algorithm.signals['signal'])
+            self.algorithm.plot_signals(n_intervals=100)
 
     def run(self):
         while True:
