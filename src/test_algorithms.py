@@ -7,6 +7,7 @@ from user_interface import UserInterface
 from logger import Logger
 from bybit import BybitAPI
 
+
 class TradingBot:
     def __init__(self, mode):
         self.mode = mode
@@ -14,14 +15,15 @@ class TradingBot:
         self.bybit = BybitAPI()
         self.logger = Logger()
         self.algorithm = None
+        self.data = None
 
         if self.mode == 'ml':
-            data = self.get_historical_data()
-            data['close'] = pd.to_numeric(data['close'])
-            data = data.sort_values(by='timestamp')
-            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
+            self.data = self.get_historical_data(60 * 60 * 24 * 31)
+            self.data['close'] = pd.to_numeric(self.data['close'])
+            self.data = self.data.sort_values(by='timestamp')
+            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
             self.algorithm.generate_signals()
-            self.algorithm.plot_signals(n_intervals=100)
+            # self.algorithm.plot_signals(n_intervals=100)
 
     def run(self):
         while True:
@@ -53,7 +55,7 @@ class TradingBot:
             order_id = input("Enter order ID: ")
             return self.bybit.cancel_order(order_id)
         elif action == "get_historical_data":
-            return self.get_historical_data()
+            return self.get_historical_data(60 * 60 * 24 * 30)
         elif action == "exit":
             exit()
 
@@ -72,22 +74,33 @@ class TradingBot:
 
         return order_params
 
-    def get_historical_data(self):
-        interval = "15"
+    def get_historical_data(self, period):
+        interval = "5"
         end_time = int(time.time() * 1000)
-        start_time = end_time - 60 * 60 * 24 * 30 * 1000
+        start_time = end_time - period * 1000
 
         all_data = pd.DataFrame()
 
-        while start_time < end_time:
-            df = self.bybit.get_historical_data(interval, start_time, 4 * 24)
+        while start_time <= end_time:
+            df = self.bybit.get_historical_data(interval, start_time, int(1440 // int(interval)))
             if df.empty:
                 break
             all_data = pd.concat([all_data, df])
             start_time = start_time + 86400 * 1000
 
-        all_data.to_csv('historical_data.csv')
+        # all_data.to_csv('historical_data.csv')
+        # print(all_data)
         return all_data
+
+    def get_current_position(self):
+        return self.algorithm.signals['positions'].iloc[-1]
+
+    def update(self):
+        new_data = self.get_historical_data(60 * 15)
+        new_data = new_data.sort_values(by='timestamp')
+        self.data.join(new_data, how='outer', lsuffix='timestamp')
+        self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
+        self.algorithm.generate_signals()
 
 
 if __name__ == '__main__':
