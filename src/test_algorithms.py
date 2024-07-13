@@ -23,7 +23,7 @@ class TradingBot:
             self.data = self.data.sort_values(by='timestamp')
             self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
             self.algorithm.generate_signals()
-            # self.algorithm.plot_signals(n_intervals=100)
+            self.algorithm.plot_signals(n_intervals=200)
 
     def run(self):
         while True:
@@ -55,7 +55,7 @@ class TradingBot:
             order_id = input("Enter order ID: ")
             return self.bybit.cancel_order(order_id)
         elif action == "get_historical_data":
-            return self.get_historical_data(60 * 60 * 24 * 30)
+            return self.get_historical_data(60 * 60 * 24 * 31)
         elif action == "exit":
             exit()
 
@@ -88,7 +88,7 @@ class TradingBot:
             all_data = pd.concat([all_data, df])
             start_time = start_time + 86400 * 1000
 
-        # all_data.to_csv('historical_data.csv')
+        all_data.to_csv('historical_data.csv')
         # print(all_data)
         return all_data
 

@@ -68,26 +68,9 @@ To run the bot, execute the following command:
 python src/bot.py
 ```
 
-## Progress Report
+## Project website and progress reports:
 
-### Done:
-
-- Defined the techical structure of the project (creation of interfaces and basic modules): maintainable, easily addable and productive system
-- Implemented algorithms:
-    * SMA (Simple Moving Average) and EMA (Exponential Moving Average) - look at the moving average of buy/sell picks. They are essential tools for analyzing price trends, serving as the baseline for our decision-making process.
-    * RSI (Relative Strength Index) algorithm assesses whether a coin is oversold or overbought, using a scale from 0 to 100 to inform trading actions.
-    * The MACD (Moving Average Convergence Divergence) evaluates the interaction between two moving averages and signals actions when they cross.
-    * Bollinger Bands analyze price volatility by considering moving averages and standard deviations, guiding our trading decisions based on price deviations from these bands.
-- Connected and tested exchange API
-- Added DB and transactions logging
-- Created CLI for management
-
-### To-Do:
-- Merge the branches & resolve conflicts
-- Add class methods to decompose the system into maintanable & atomic parts
-- Up the SQLlite Database & save logs to it
-- Connect trade algorithms with API interface
-
+[Innopolis University Summer course 2024 ATS capstone project](https://capstone.innopolis.university/docs/2024/ats/week1)
 
 ## Issues and Support
 
