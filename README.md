@@ -92,6 +92,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Authors
 
 - [Ivan Golov](https://github.com/IVproger): Team Lead
-- [Andrey Pavlov](an.pavlov@innopolis.university): Algorithms Engineer
+- [Andrey Pavlov](https://github.com/IAndermanI): Algorithms Engineer
 - [Shamil Kashapov](https://github.com/favelanky): Full-stack Developer
 - [Bulat Latypov](https://github.com/Bulatypov): Backend Developer
