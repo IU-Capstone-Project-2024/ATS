@@ -22,11 +22,11 @@ The bot component is a multifunctional system that performs various trading oper
 
 Algorithmic section contains of 6 functions:
 1. [SMA](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/sma_algorithm.py)
-2. EMA
-3. MACD
-4. RSI
-5. Bollinger bands
-6. Momentum strategy
+2. [EMA](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/ema_algorithm.py)
+3. [MACD](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/macd_algorithm.py)
+4. [RSI](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/rsi_algorithm.py)
+5. [Bollinger bands](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/bollinger_bands_algorithm.py)
+6. [Momentum strategy](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/momentum_strategy.py)
 
 
 ## Stack
