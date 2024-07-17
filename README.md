@@ -16,9 +16,18 @@ Welcome to the Automatic Trade System (ATS) project! This repository is dedicate
 
 ## Overview
 
-The ATS project aims to develop an automated trading system that leverages machine learning algorithms to predict market trends and make informed trading decisions. The project consists of a frontend web interface and a backend machine learning component.
+The ATS project aims to develop an automated trading system that leverages machine learning and trading algorithms to predict market trends and make informed trading decisions. The project consists of a frontend web interface, backend machine learning and algorithmic trading component.
 
 The bot component is a multifunctional system that performs various trading operations (buying, selling, setting orders, etc.) on the registered business account via the API, as well as monitors dynamically changing data of the cryptocurrency exchange and implements several trading strategies that are set through classical trading algorithms methodology.
+
+Algorithmic section contains of 6 functions:
+1. [SMA](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/sma_algorithm.py)
+2. EMA
+3. MACD
+4. RSI
+5. Bollinger bands
+6. Momentum strategy
+
 
 ## Stack
 ![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
