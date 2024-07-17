@@ -16,8 +16,8 @@ class MACDAlgorithm(Algorithm):
         self.signals['Hist'] = self.signals['MACD'] - self.signals['Signal']
         self.signals['price'] = self.data['close']
         self.signals['signal'] = 0.0
-        self.signals.loc[self.signals['MACD'] > self.signals['Signal'], ['signal']] = 1.0
-        self.signals.loc[self.signals['MACD'] < self.signals['Signal'], ['signal']] = -1.0
+        self.signals.loc[self.signals['MACD'] > self.signals['Signal'], ['signal']] = -1.0
+        self.signals.loc[self.signals['MACD'] < self.signals['Signal'], ['signal']] = 1.0
 
 
     def plot_signals(self, n_intervals=100):
