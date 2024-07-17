@@ -3,10 +3,13 @@ import questionary
 import pandas as pd
 from algorithms.sma_algorithm import SMAAlgorithm
 from algorithms.rsi_algorithm import RSIAlgorithm
+from algorithms.ema_algorithm import EMAAlgorithm
+from algorithms.macd_algorithm import MACDAlgorithm
+from algorithms.bollinger_bands_algorithm import BollingerBandsAlgorithm
+from algorithms.momentum_strategy import MomentumStrategyAlgorithm
 from user_interface import UserInterface
 from logger import Logger
 from bybit import BybitAPI
-
 
 class TradingBot:
     def __init__(self, mode):
@@ -15,13 +18,17 @@ class TradingBot:
         self.bybit = BybitAPI()
         self.logger = Logger()
         self.algorithm = None
-        self.data = None
 
         if self.mode == 'ml':
-            self.data = self.get_historical_data(60 * 60 * 24 * 31)
-            self.data['close'] = pd.to_numeric(self.data['close'])
-            self.data = self.data.sort_values(by='timestamp')
-            self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
+            data = self.get_historical_data()
+            data['close'] = pd.to_numeric(data['close'])
+            data = data.sort_values(by='timestamp')
+            # self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=data, short_window=40, long_window=100)
+            # self.algorithm = RSIAlgorithm(symbol="BTCUSDT", data=data, period=14)
+            # self.algorithm = EMAAlgorithm(symbol="BTCUSDT", data=data, short_window=12, long_window=26)
+            # self.algorithm = MACDAlgorithm(symbol="BTCUSDT", data=data, short_window=12, long_window=26, signal_window=9)
+            # self.algorithm = BollingerBandsAlgorithm(symbol="BTCUSDT", data=data, window=20, num_std_dev=2)
+            self.algorithm = MomentumStrategyAlgorithm(symbol="BTCUSDT", data=data, window=20)
             self.algorithm.generate_signals()
             self.algorithm.plot_signals(n_intervals=200)
 
@@ -55,7 +62,7 @@ class TradingBot:
             order_id = input("Enter order ID: ")
             return self.bybit.cancel_order(order_id)
         elif action == "get_historical_data":
-            return self.get_historical_data(60 * 60 * 24 * 31)
+            return self.get_historical_data()
         elif action == "exit":
             exit()
 
@@ -74,33 +81,22 @@ class TradingBot:
 
         return order_params
 
-    def get_historical_data(self, period):
-        interval = "5"
+    def get_historical_data(self):
+        interval = "15"
         end_time = int(time.time() * 1000)
-        start_time = end_time - period * 1000
+        start_time = end_time - 60 * 60 * 24 * 30 * 1000
 
         all_data = pd.DataFrame()
 
         while start_time <= end_time:
-            df = self.bybit.get_historical_data(interval, start_time, int(1440 // int(interval)))
+            df = self.bybit.get_historical_data(interval, start_time, 60 * 24 // int(interval))
             if df.empty:
                 break
             all_data = pd.concat([all_data, df])
             start_time = start_time + 86400 * 1000
 
         all_data.to_csv('historical_data.csv')
-        # print(all_data)
         return all_data
-
-    def get_current_position(self):
-        return self.algorithm.signals['positions'].iloc[-1]
-
-    def update(self):
-        new_data = self.get_historical_data(60 * 15)
-        new_data = new_data.sort_values(by='timestamp')
-        self.data.join(new_data, how='outer', lsuffix='timestamp')
-        self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
-        self.algorithm.generate_signals()
 
 
 if __name__ == '__main__':
