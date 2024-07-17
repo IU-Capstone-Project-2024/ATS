@@ -1,5 +1,5 @@
 import time
-from ml_interface import MLInterface
+# from ml_interface import MLInterface
 from user_interface import UserInterface
 from logger import Logger
 from bybit import BybitAPI
@@ -9,7 +9,7 @@ import questionary
 class TradingBot:
     def __init__(self, mode, logger):
         self.mode = mode
-        self.ml_interface = MLInterface()
+        # self.ml_interface = MLInterface()
         self.user_interface = UserInterface()
         self.bybit = BybitAPI()
         self.logger = logger

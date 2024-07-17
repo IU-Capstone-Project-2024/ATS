@@ -18,8 +18,8 @@ class BybitAPI:
 
     def get_current_price(self, symbol):
         return self.client.get_tickers(
-            category="inverse",
-            symbol="BTCUSD",
+            category="spot",
+            symbol="BTCUSDT",
         )['result']['list'][0]['lastPrice']
 
     def get_unfilled_orders(self, open_only: int = 0, limit: int = 1):

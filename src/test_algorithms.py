@@ -12,7 +12,7 @@ from logger import Logger
 from bybit import BybitAPI
 
 
-class TradingBot:
+class Algorithms:
     def __init__(self, mode):
         self.mode = mode
         self.user_interface = UserInterface()
@@ -25,14 +25,6 @@ class TradingBot:
             self.data = self.get_historical_data(60 * 60 * 24 * 31)
             self.data['close'] = pd.to_numeric(self.data['close'])
             self.data = self.data.sort_values(by='timestamp')
-            # self.algorithm = SMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=40, long_window=100)
-            # self.algorithm = RSIAlgorithm(symbol="BTCUSDT", data=self.data, period=14)
-            # self.algorithm = EMAAlgorithm(symbol="BTCUSDT", data=self.data, short_window=12, long_window=26)
-            # self.algorithm = MACDAlgorithm(symbol="BTCUSDT", data=self.data, short_window=12, long_window=26, signal_window=9)
-            # self.algorithm = BollingerBandsAlgorithm(symbol="BTCUSDT", data=self.data, window=20, num_std_dev=2)
-            # self.algorithm = MomentumStrategyAlgorithm(symbol="BTCUSDT", data=self.data, window=20)
-            # self.algorithm.generate_signals()
-            # self.algorithm.plot_signals(n_intervals=200)
             self.initialize_algorithms()
             self.generate_signals()
 
@@ -119,7 +111,7 @@ class TradingBot:
     def get_current_positions(self):
         positions = []
         for algorithm in self.algorithms:
-            positions.append(algorithm.signals['signal'].iloc[-1])
+            positions.append(int(algorithm.signals['signal'].iloc[-1]))
         return positions
             # return self.algorithm.signals['positions'].iloc[-1]
 
@@ -133,7 +125,7 @@ class TradingBot:
 
 if __name__ == '__main__':
     mode = questionary.select("Select mode", choices=["ml", "user"]).ask()
-    bot = TradingBot(mode)
+    bot = Algorithms(mode)
     try:
         bot.run()
     except Exception as e:
