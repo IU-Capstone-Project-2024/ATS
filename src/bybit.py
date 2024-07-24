@@ -14,7 +14,7 @@ class BybitAPI:
         if payload['price'] is None or float(payload['price']) < 0:
             payload['price'] = str(self.get_current_price(payload['symbol']))
         response = self.client.place_order(**payload)
-        return response
+        return response, payload['price']
 
     def get_current_price(self, symbol):
         return self.client.get_tickers(

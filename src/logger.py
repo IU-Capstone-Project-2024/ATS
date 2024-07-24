@@ -8,20 +8,35 @@ class Logger:
 
     def create_table(self):
         query = """
+        CREATE TABLE IF NOT EXISTS decisions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            model TEXT,
+            action TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+        """
+        query1 = """
         CREATE TABLE IF NOT EXISTS logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             action TEXT,
-            result TEXT,
+            price TEXT,
+            qty TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         )
         """
         with self.conn:
             self.conn.execute(query)
+            self.conn.execute(query1)
 
-    def log_trade(self, action, result):
-        query = "INSERT INTO logs (action, result) VALUES (?, ?)"
+    def log_decision(self, model, action):
+        query = "INSERT INTO decisions (model, action) VALUES (?, ?)"
         with self.conn:
-            self.conn.execute(query, (action, result))
+            self.conn.execute(query, (model, action))
+
+    def log_trade(self, action, price, qty):
+        query = "INSERT INTO logs (action, price, qty) VALUES (?, ?, ?)"
+        with self.conn:
+            self.conn.execute(query, (action, price, qty))
 
     def close(self):
         self.conn.close()
