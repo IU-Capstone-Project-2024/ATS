@@ -16,9 +16,18 @@ Welcome to the Automatic Trade System (ATS) project! This repository is dedicate
 
 ## Overview
 
-The ATS project aims to develop an automated trading system that leverages machine learning algorithms to predict market trends and make informed trading decisions. The project consists of a frontend web interface and a backend machine learning component.
+The ATS project aims to develop an automated trading system that leverages machine learning and trading algorithms to predict market trends and make informed trading decisions. The project consists of a frontend web interface, backend machine learning and algorithmic trading component.
 
 The bot component is a multifunctional system that performs various trading operations (buying, selling, setting orders, etc.) on the registered business account via the API, as well as monitors dynamically changing data of the cryptocurrency exchange and implements several trading strategies that are set through classical trading algorithms methodology.
+
+Algorithmic section contains of 6 functions:
+1. [SMA](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/sma_algorithm.py)
+2. [EMA](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/ema_algorithm.py)
+3. [MACD](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/macd_algorithm.py)
+4. [RSI](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/rsi_algorithm.py)
+5. [Bollinger bands](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/bollinger_bands_algorithm.py)
+6. [Momentum strategy](https://github.com/IU-Capstone-Project-2024/ATS_bot/blob/main/src/algorithms/momentum_strategy.py)
+
 
 ## Stack
 ![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
@@ -83,6 +92,6 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Authors
 
 - [Ivan Golov](https://github.com/IVproger): Team Lead
-- [Andrey Pavlov](an.pavlov@innopolis.university): Algorithms Engineer
+- [Andrey Pavlov](https://github.com/IAndermanI): Algorithms Engineer
 - [Shamil Kashapov](https://github.com/favelanky): Full-stack Developer
 - [Bulat Latypov](https://github.com/Bulatypov): Backend Developer
